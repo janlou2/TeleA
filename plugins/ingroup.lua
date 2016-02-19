@@ -216,7 +216,7 @@ local function show_group_settingsmod(msg, data, target)
     	leave_ban = data[tostring(msg.to.id)]['settings']['leave_ban']
    	end
   local settings = data[tostring(target)]['settings']
-  local text = "تنظیمات گروه:\n\n>قفل نام گروه : "..settings.lock_name.."\n>قفل عکس گروه : "..settings.lock_photo.."\n>قفل اعضا : "..settings.lock_member.."\n>ممنوعیت ارسال لینک : "..lock_link.."\n>حساسیت اسپم : "..NUM_MSG_MAX.."\n>قفل ربات ها : "..bots_protection.."\n>قفل تگ : "..tag.."\n>قفل اینگلیسی :"..lock_english.."\n>قفل فحش : "..lock_badw.."\n>Sbss Open Source Version\n"
+ local text = "تنظیمات گروه:\n\n>قفل نام گروه : "..settings.lock_name.."\n>قفل عکس گروه : "..settings.lock_photo.."\n>قفل اعضا : "..settings.lock_member.."\n>ممنوعیت ارسال لینک : "..lock_link.."\n>حساسیت اسپم : "..NUM_MSG_MAX.."\n>قفل ربات ها : "..bots_protection.."\n>قفل تگ : "..tag.."\n>قفل اینگلیسی :"..lock_english.."\n>قفل فحش : "..lock_badw.."\n>Sbss Open Source Version\n"
   return text
 end
 
@@ -1236,18 +1236,18 @@ local function run(msg, matches)
       send_large_msg(receiver, text)
       return
     end
-    if matches[1] == 'تنظیم حساسیت' then 
+    if matches[1] == 'حساسیت' then 
       if not is_momod(msg) then
-        return "For moderators only!"
+        return "شما مجاز نیستید"
       end
       if tonumber(matches[2]) < 5 or tonumber(matches[2]) > 20 then
-        return "بین 5 و 20"
+        return "عددی از بین 5 و 20 انتخاب کنید"
       end
       local flood_max = matches[2]
       data[tostring(msg.to.id)]['settings']['flood_msg_max'] = flood_max
       save_data(_config.moderation.data, data)
       savelog(msg.to.id, name_log.." ["..msg.from.id.."] set flood to ["..matches[2].."]")
-      return 'حساسیت تغییر یافت به '..matches[2]
+      return 'حساسیت اسپم تغییر یافت به '..matches[2]
     end
     if matches[1] == 'پاک کردن' then
       if not is_owner(msg) then
@@ -1368,7 +1368,7 @@ return {
   "^(آیدی) (.*)$",
   "^(صاحب) (%d+) (%d+)$",-- (group id) (owner id)
   "^(باز کردن) (.*)$",
-  "^(تنظیم حساسیت) (%d+)$",
+  "^(حساسیت) (%d+)$",
   "^(تنظیمات)$",
 -- "^[!/](public) (.*)$",
   "^(لیست مدیران)$",
