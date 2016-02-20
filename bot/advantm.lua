@@ -218,7 +218,6 @@ function create_config( )
     "owners",
     "arabic_lock",
     "lock_badw",
-    "Boobs",
     "set",
     "get",
     "broadcast",
