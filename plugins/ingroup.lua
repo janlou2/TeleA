@@ -13,7 +13,7 @@ local function check_member_autorealm(cb_extra, success, result)
         group_type = 'Realm',
         settings = {
           set_name = string.gsub(msg.to.print_name, '_', ' '),
-          antifosh = 'no',
+          lock_badw = 'no',
 		  antitag = 'no',
 		  antilink = 'no',
 		  lock_name = 'yes',
@@ -46,7 +46,7 @@ local function check_member_realm_add(cb_extra, success, result)
         group_type = 'Realm',
         settings = {
           set_name = string.gsub(msg.to.print_name, '_', ' '),
-          antifosh = 'no',
+          lock_badw = 'no',
 		  antitag = 'no',
 		  antilink = 'no',
 		  lock_name = 'yes',
@@ -81,7 +81,7 @@ function check_member_group(cb_extra, success, result)
         set_owner = member_id ,
         settings = {
           set_name = string.gsub(msg.to.print_name, '_', ' '),
-          antifosh = 'no',
+          lock_badw = 'no',
 		  antitag = 'no',
 		  antilink = 'no',
 		  lock_name = 'yes',
@@ -116,7 +116,7 @@ local function check_member_modadd(cb_extra, success, result)
         set_owner = member_id ,
         settings = {
           set_name = string.gsub(msg.to.print_name, '_', ' '),
-          antifosh = 'no',
+          lock_badw = 'no',
 		  antitag = 'no',
 		  antilink = 'no',
 		  lock_name = 'yes',
@@ -215,8 +215,36 @@ local function show_group_settingsmod(msg, data, target)
     if data[tostring(msg.to.id)]['settings']['leave_ban'] then
     	leave_ban = data[tostring(msg.to.id)]['settings']['leave_ban']
    	end
+    local lock_link = "Yes"
+    if data[tostring(msg.to.id)]['settings']['lock_link'] then
+    	lock_link = data[tostring(msg.to.id)]['settings']['lock_link']
+   	end
+    local sticker = "ok"
+    if data[tostring(msg.to.id)]['settings']['sticker'] then
+    	sticker = data[tostring(msg.to.id)]['settings']['sticker']
+   	end
+    local tag = "no"
+    if data[tostring(msg.to.id)]['settings']['tag'] then
+    	tag = data[tostring(msg.to.id)]['settings']['tag']
+   	end
+    local lock_badw = "no"
+    if data[tostring(msg.to.id)]['settings']['lock_badw'] then
+    	lock_badw = data[tostring(msg.to.id)]['settings']['lock_badw']
+   	end
+    local lock_english = "no"
+    if data[tostring(msg.to.id)]['settings']['lock_english'] then
+    	lock_username = data[tostring(msg.to.id)]['settings']['lock_english']
+   	end
+    local lock_arabic = "no"
+    if data[tostring(msg.to.id)]['settings']['lock_arabic'] then
+    	lock_arabic = data[tostring(msg.to.id)]['settings']['lock_arabic']
+   	end
+    local welcome = "group"
+    if data[tostring(msg.to.id)]['settings']['welcome'] then
+    	welcome = data[tostring(msg.to.id)]['settings']['welcome']
+   	end
   local settings = data[tostring(target)]['settings']
- local text = "تنظیمات گروه:\n\n>قفل نام گروه : "..settings.lock_name.."\n>قفل عکس گروه : "..settings.lock_photo.."\n>قفل اعضا : "..settings.lock_member.."\n>ممنوعیت ارسال لینک : "..lock_link.."\n>حساسیت اسپم : "..NUM_MSG_MAX.."\n>قفل ربات ها : "..bots_protection.."\n>قفل تگ : "..tag.."\n>قفل اینگلیسی :"..lock_english.."\n>قفل فحش : "..lock_badw.."\n>Sbss Open Source Version\n"
+ local text = "تنظیمات گروه:\n\n>قفل نام گروه : "..settings.lock_name.."\n>قفل عکس گروه : "..settings.lock_photo.."\n>قفل اعضا : "..settings.lock_member.."\n>ممنوعیت ارسال لینک : "..lock_link.."\n>حساسیت اسپم : "..NUM_MSG_MAX.."\n>قفل ربات ها : "..bots_protection.."\n>قفل تگ : "..tag.."\n>قفل انگلیسی :"..lock_english.."\n>قفل فحش : "..lock_badw.."\n>Sbss Open Source Version\n"
   return text
 end
 
@@ -319,31 +347,56 @@ save_data(_config.moderation.data, data)
 return 'تگ کردن آزاد شد'
 end
 end
-local function lock_group_fosh(msg, data, target)
-if not is_momod(msg) then
-return "فقط مدیران"
+  local group_english_lock = data[tostring(target)]['settings']['lock_english']
+  if group_english_lock == 'yes' then
+    return 'انگلیسی از قبل قفل است'
+  else
+    data[tostring(target)]['settings']['lock_english'] = 'yes'
+    save_data(_config.moderation.data, data)
+    return 'انگلیسی قفل شد'
+  end
 end
-local group_fo_lock = data[tostring(target)]['settings']['antifosh']
-if group_fosh_lock == 'yes' then
-return ' فحاشی از قبل ممنوع است'
-else
-data[tostring(target)]['settings']['antifosh'] = 'yes'
-save_data(_config.moderation.data, data)
-return 'فحاشی ممنوع شد'
+
+local function unlock_group_english(msg, data, target)
+  if not is_momod(msg) then
+    return "فقط مدیران"
+  end
+  local group_english_lock = data[tostring(target)]['settings']['lock_english']
+  if group_english_lock == 'no' then
+    return 'انگلیسی از قبل باز است'
+  else
+    data[tostring(target)]['settings']['lock_english'] = 'no'
+    save_data(_config.moderation.data, data)
+    return 'انگلیسی ازاد شد'
+  end
 end
+
+local function lock_group_badw(msg, data, target)
+  if not is_momod(msg) then
+    return "فقط مدیران"
+  end
+  local group_badw_lock = data[tostring(target)]['settings']['lock_badw']
+  if group_badw_lock == 'yes' then
+    return 'فحاشی از قبل ممنوع است'
+  else
+    data[tostring(target)]['settings']['lock_badw'] = 'yes'
+    save_data(_config.moderation.data, data)
+    return 'فحاشی قفل شد'
+  end
 end
-local function unlock_group_fosh(msg, data, target)
-if not is_momod(msg) then
-return "فقط مدیران"
-end
-local group_fosh_lock = data[tostring(target)]['settings']['antifosh']
-if group_fosh_lock == 'no' then
-return 'فحاشی از قبل آزاد بود'
-else
-data[tostring(target)]['settings']['antifosh'] = 'no'
-save_data(_config.moderation.data, data)
-return 'فحاشی ازاد شد'
-end
+
+local function unlock_group_badw(msg, data, target)
+  if not is_momod(msg) then
+    return "فقط مدیران"
+  end
+  local group_badw_lock = data[tostring(target)]['settings']['lock_badw']
+  if group_badw_lock == 'no' then
+    return 'فحاشی از قبل آزاد است'
+  else
+    data[tostring(target)]['settings']['lock_badw'] = 'no'
+    save_data(_config.moderation.data, data)
+    return 'فحاشی آزاد شد'
+  end
 end
 local function lock_group_link(msg, data, target)
 if not is_momod(msg) then
@@ -609,7 +662,7 @@ local function set_group_photo(msg, success, result)
     save_data(_config.moderation.data, data)
     data[tostring(msg.to.id)]['settings']['lock_photo'] = 'yes'
     save_data(_config.moderation.data, data)
-    send_large_msg(receiver, 'Photo saved!', ok_cb, false)
+    send_large_msg(receiver, 'عکس ذخیره شد!', ok_cb, false)
   else
     print('Error downloading: '..msg.id)
     send_large_msg(receiver, 'Failed, please try again!', ok_cb, false)
@@ -1099,7 +1152,7 @@ local function run(msg, matches)
        return lock_group_fosh(msg, data, target)
      end
    end
-    if matches[1] == 'باز کردن' then 
+    if matches[1] == 'بازکردن' then 
       local target = msg.to.id
       if matches[2] == 'نام' then
         savelog(msg.to.id, name_log.." ["..msg.from.id.."] unlocked name ")
@@ -1117,29 +1170,29 @@ local function run(msg, matches)
         savelog(msg.to.id, name_log.." ["..msg.from.id.."] unlocked flood ")
         return unlock_group_floodmod(msg, data, target)
       end
-      if matches[2] == 'عربی' then
-        savelog(msg.to.id, name_log.." ["..msg.from.id.."] unlocked arabic ")
-        return unlock_group_arabic(msg, data, target)
-      end
-	  if matches[2] == 'لینک' then
-        savelog(msg.to.id, name_log.." ["..msg.from.id.."] unlocked link ")
-        return unlock_group_link(msg, data, target)
-      end
-      if matches[2] == 'ربات ها' then
+      if matches[2] == 'ربات  ها' then
         savelog(msg.to.id, name_log.." ["..msg.from.id.."] unlocked bots ")
         return unlock_group_bots(msg, data, target)
       end
-	  if matches[2] == 'فحش' then
-        savelog(msg.to.id, name_log.." ["..msg.from.id.."] unlocked fosh ")
-        return unlock_group_fosh(msg, data, target)
+      if matches[2] == 'لینک' then
+        savelog(msg.to.id, name_log.." ["..msg.from.id.."] unlocked link🔓 ")
+        return unlock_group_link(msg, data, target)
+      end
+      if matches[2] == 'تگ' then
+        savelog(msg.to.id, name_log.." ["..msg.from.id.."] unlocked tag🔓 ")
+        return unlock_group_tag(msg, data, target)
+      end
+      if matches[2] == 'فحش' then
+        savelog(msg.to.id, name_log.." ["..msg.from.id.."] unlocked badw🔓 ")
+        return unlock_group_badw(msg, data, target)
+      end
+      if matches[2] == 'انگلیسی' then
+        savelog(msg.to.id, name_log.." ["..msg.from.id.."] unlocked english🔓 ")
+        return unlock_group_english(msg, data, target)
       end
     if matches[2] == 'خروج' then
        savelog(msg.to.id, name_log.." ["..msg.from.id.."] unlocked leaving ")
        return unlock_group_leave(msg, data, target)
-     end
-	 if matches[2] == 'تگ' then
-       savelog(msg.to.id, name_log.." ["..msg.from.id.."] unlocked tag ")
-       return unlock_group_tag(msg, data, target)
      end
    end
     if matches[1] == 'settings' or matches[1] == 'تنظیمات' then
