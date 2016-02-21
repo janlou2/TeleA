@@ -13,7 +13,7 @@ local function check_member_autorealm(cb_extra, success, result)
         group_type = 'Realm',
         settings = {
           set_name = string.gsub(msg.to.print_name, '_', ' '),
-          lock_badw = 'no',
+          antifosh = 'no',
 		  antitag = 'no',
 		  antilink = 'no',
 		  lock_name = 'yes',
@@ -335,11 +335,11 @@ local function lock_group_badw(msg, data, target)
   if not is_momod(msg) then
     return "فقط مدیران"
   end
-  local group_badw_lock = data[tostring(target)]['settings']['lock_badw']
+  local group_badw_lock = data[tostring(target)]['settings']['antifosh']
   if group_badw_lock == 'yes' then
     return 'فحاشی از قبل ممنوع است'
   else
-    data[tostring(target)]['settings']['lock_badw'] = 'yes'
+    data[tostring(target)]['settings']['antifosh'] = 'yes'
     save_data(_config.moderation.data, data)
     return 'فحاشی قفل شد'
   end
@@ -349,11 +349,11 @@ local function unlock_group_badw(msg, data, target)
   if not is_momod(msg) then
     return "فقط مدیران"
   end
-  local group_badw_lock = data[tostring(target)]['settings']['lock_badw']
+  local group_badw_lock = data[tostring(target)]['settings']['antifosh']
   if group_badw_lock == 'no' then
     return 'فحاشی از قبل آزاد است'
   else
-    data[tostring(target)]['settings']['lock_badw'] = 'no'
+    data[tostring(target)]['settings']['antifosh'] = 'no'
     save_data(_config.moderation.data, data)
     return 'فحاشی آزاد شد'
   end
