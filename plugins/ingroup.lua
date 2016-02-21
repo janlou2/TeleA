@@ -211,6 +211,10 @@ local function show_group_settingsmod(msg, data, target)
     if data[tostring(msg.to.id)]['settings']['lock_bots'] then
     	bots_protection = data[tostring(msg.to.id)]['settings']['lock_bots']
    	end
+  local lock_link = "no"
+    if data[tostring(msg.to.id)]['settings']['antilink'] then
+        lock_link = data[tostring(msg.to.id)]['settings']['antilink']
+        end
     local leave_ban = "no"
     if data[tostring(msg.to.id)]['settings']['leave_ban'] then
     	leave_ban = data[tostring(msg.to.id)]['settings']['leave_ban']
