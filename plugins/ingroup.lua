@@ -17,7 +17,7 @@ local function check_member_autorealm(cb_extra, success, result)
 		  antitag = 'no',
 		  antilink = 'no',
 		  lock_name = 'yes',
-          lock_photo = 'no',
+          lock_photo = 'yes',
           lock_member = 'no',
           flood = 'yes'
         }
@@ -50,7 +50,7 @@ local function check_member_realm_add(cb_extra, success, result)
 		  antitag = 'no',
 		  antilink = 'no',
 		  lock_name = 'yes',
-          lock_photo = 'no',
+          lock_photo = 'yes',
           lock_member = 'no',
           flood = 'yes'
         }
@@ -85,7 +85,7 @@ function check_member_group(cb_extra, success, result)
 		  antitag = 'no',
 		  antilink = 'no',
 		  lock_name = 'yes',
-          lock_photo = 'no',
+          lock_photo = 'yes',
           lock_member = 'no',
           flood = 'yes',
         }
@@ -120,7 +120,7 @@ local function check_member_modadd(cb_extra, success, result)
 		  antitag = 'no',
 		  antilink = 'no',
 		  lock_name = 'yes',
-          lock_photo = 'no',
+          lock_photo = 'yes',
           lock_member = 'no',
           flood = 'yes',
         }
@@ -223,8 +223,8 @@ local function show_group_settingsmod(msg, data, target)
     if data[tostring(msg.to.id)]['settings']['antifosh'] then
     	antifosh = data[tostring(msg.to.id)]['settings']['antifosh']
    	end
-  local settings = data[tostring(target)]['settings']
- local text = "تنظیمات گروه:\n\n>قفل نام گروه : "..settings.lock_name.."\n>قفل عکس گروه : "..settings.lock_photo.."\n>قفل اعضا : "..settings.lock_member.."\n>ممنوعیت ارسال لینک : "..lock_link.."\n>حساسیت اسپم : "..NUM_MSG_MAX.."\n>قفل ربات ها : "..bots_protection.."\n>قفل تگ : "..tag.."\n>قفل انگلیسی :"..lock_english.."\n>قفل فحش : "..lock_badw.."\n>Sbss Open Source Version\n"
+ local settings = data[tostring(target)]['settings']
+ local text = "تنظیمات گروه:\n>قفل نام گروه : "..settings.lock_name.."\n>قفل عکس گروه : "..settings.lock_photo.."\n>قفل اعضا : "..settings.lock_member.."\n>ممنوعیت ارسال لینک : "..lock_link.."\n>حساسیت اسپم : "..NUM_MSG_MAX.."\n>قفل ربات ها : "..bots_protection.."\n>قفل تگ : "..tag.."\n>قفل انگلیسی :"..lock_english.."\n>قفل فحش : "..lock_badw.."\n>Sbss Open Source Version\n"
   return text
 end
 
@@ -522,6 +522,21 @@ local function unlock_group_leave(msg, data, target)
   end
 end
 
+local function lock_group_photomod(msg, data, target)
+  if not is_momod(msg) then
+    return "فقط مدیران"
+  end
+  local group_photo_set = data[tostring(target)]['settings']['set_photo']
+  local group_photo_lock = data[tostring(target)]['settings']['lock_photo']
+  if group_name_lock == 'yes' then
+    return 'عکس گروه از قبل قفل است'
+  else
+    data[tostring(target)]['settings']['lock_photo'] = 'yes'
+    save_data(_config.moderation.data, data)
+    rename_chat('chat#id'..target, group_photo_set, ok_cb, false)
+    return 'عکس گروه قفل شد'
+  end
+end
 local function unlock_group_photomod(msg, data, target)
   if not is_momod(msg) then
     return "فقط مدیران"
@@ -1191,7 +1206,7 @@ local function run(msg, matches)
         return "اول با لینک جدید یک لینک جدید بسازید"
       end
        savelog(msg.to.id, name_log.." ["..msg.from.id.."] requested group link ["..group_link.."]")
-      return "لینک گروه :'..string.gsub(group_name, '_', ' ')..'\nقدرت برگرفته از ادوان\n"..group_link
+      return "لینک گروه :\nقدرت برگرفته از ادوان\n"..group_link
     end
 	if matches[1] == 'لینک خصوصی' then
       if not is_momod(msg) then
@@ -1202,7 +1217,7 @@ local function run(msg, matches)
         return "اول با لینک جدید یک لینک بسازید"
       end
        savelog(msg.to.id, name_log.." ["..msg.from.id.."] requested group link ["..group_link.."]")
-     send_large_msg('user#id'..msg.from.id, "لینک گروه :'..string.gsub(group_name, '_', ' ')..'\nقدرت برگرفته از ادوان\n"..group_link)
+     send_large_msg('user#id'..msg.from.id, "لینک گروه :\nقدرت برگرفته از ادوان\n"..group_link)
     end
     if matches[1] == 'دارنده' and matches[2] then
       if not is_owner(msg) then
