@@ -17,7 +17,7 @@ local function check_member_autorealm(cb_extra, success, result)
 		  antitag = 'no',
 		  antilink = 'no',
 		  lock_name = 'yes',
-          lock_photo = 'yes',
+          lock_photo = 'no',
           lock_member = 'no',
           flood = 'yes'
         }
@@ -50,7 +50,7 @@ local function check_member_realm_add(cb_extra, success, result)
 		  antitag = 'no',
 		  antilink = 'no',
 		  lock_name = 'yes',
-          lock_photo = 'yes',
+          lock_photo = 'no',
           lock_member = 'no',
           flood = 'yes'
         }
@@ -85,7 +85,7 @@ function check_member_group(cb_extra, success, result)
 		  antitag = 'no',
 		  antilink = 'no',
 		  lock_name = 'yes',
-          lock_photo = 'yes',
+          lock_photo = 'no',
           lock_member = 'no',
           flood = 'yes',
         }
@@ -120,7 +120,7 @@ local function check_member_modadd(cb_extra, success, result)
 		  antitag = 'no',
 		  antilink = 'no',
 		  lock_name = 'yes',
-          lock_photo = 'yes',
+          lock_photo = 'no',
           lock_member = 'no',
           flood = 'yes',
         }
@@ -224,7 +224,7 @@ local function show_group_settingsmod(msg, data, target)
     	antifosh = data[tostring(msg.to.id)]['settings']['antifosh']
    	end
  local settings = data[tostring(target)]['settings']
- local text = "تنظیمات گروه:\n>قفل نام گروه : "..settings.lock_name.."\n>قفل عکس گروه : "..settings.lock_photo.."\n>قفل اعضا : "..settings.lock_member.."\n>ممنوعیت ارسال لینک : "..lock_link.."\n>حساسیت اسپم : "..NUM_MSG_MAX.."\n>قفل ربات ها : "..bots_protection.."\n>قفل تگ : "..tag.."\n>قفل انگلیسی :"..lock_english.."\n>قفل فحش : "..lock_badw.."\n>Sbss Open Source Version\n"
+ local text = "تنظیمات گروه:\n\n>قفل نام گروه : "..settings.lock_name.."\n>قفل عکس گروه : "..settings.lock_photo.."\n>قفل اعضا : "..settings.lock_member.."\n>ممنوعیت ارسال لینک : "..lock_link.."\n>حساسیت اسپم : "..NUM_MSG_MAX.."\n>قفل ربات ها : "..bots_protection.."\n>قفل تگ : "..tag.."\n>قفل انگلیسی :"..lock_english.."\n>قفل فحش : "..lock_badw.."\n>Sbss Open Source Version\n"
   return text
 end
 
