@@ -352,7 +352,7 @@ See Patterns In Github
 Developers: 
 @janlou
 @amiraliiiiiiiii81
-@amirhossein_0079
+@bestroid_admin
 ]]
   }
   serialize_to_file(config, './data/config.lua')
